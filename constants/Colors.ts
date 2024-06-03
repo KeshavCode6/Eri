@@ -1,3 +1,4 @@
+// Custom Color Scheme
 const COLORS = {
     dark: '#333',
     secondary: '#555',

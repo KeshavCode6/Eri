@@ -9,21 +9,26 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import firebase from 'firebase/compat/app';
 import { router } from 'expo-router';
 import { handleAuthError } from '@/constants/firebase';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 const forgotPass = () => {
   const [email, setEmail] = useState('');
   const [sentEmail, setSentEmail] = useState(false);
   const [error, setError] = useState('');
 
-  const sendEmail = (email: string) => {
-    firebase.auth().sendPasswordResetEmail(email)
-      .then(function () {
+  const sendEmail = (email:string) => {
+    const auth = getAuth(); // Get the Auth instance
+  
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
         alert('Please check your email...');
-        setSentEmail(true);
-      }).catch(function (e) {
-        setError(handleAuthError(e));
+        setSentEmail(true); // Assuming this is a state setter function to handle UI changes
+      })
+      .catch((error) => {
+        setError(handleAuthError(error)); // Handle errors
       });
-  }
+  };
+  
   if (sentEmail) {
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>

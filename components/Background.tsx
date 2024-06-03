@@ -7,6 +7,7 @@ interface CustomBackgroundProps {
     customStyling?: ViewStyle; // Marked as optional
 }
 
+// Linear Gradient Background using dark colors
 const GradientBackground: React.FC<CustomBackgroundProps> = ({ children, customStyling}) => {
     let blueColors = ['#000000', '#1A1A1A', '#282828'];
     
@@ -22,6 +23,7 @@ const GradientBackground: React.FC<CustomBackgroundProps> = ({ children, customS
     )
 }
 
+// Image background with custom container
 export const LoginImageBackground: React.FC<CustomBackgroundProps> = ({ children, customStyling}) => {
     
     return (

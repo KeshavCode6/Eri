@@ -1,16 +1,15 @@
 import { View, StyleSheet, TextInput, ColorValue, ViewStyle } from 'react-native';
 import React, { ReactNode } from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import styles from '@/constants/styles';
 
 interface InputProps {
-  icon:ReactNode;
-  color?: ColorValue;
-  placeHolder?: string;
-  background?: ColorValue;
-  input?:string;
-  secure?:boolean;
-  setInput?: (page: string) => void;
+  icon:ReactNode; // icon of input (FontAwesome5)
+  color?: ColorValue; // color of text
+  placeHolder?: string; // placeholder text
+  background?: ColorValue; // background color
+  input?:string; // state value
+  setInput?: (page: string) => void; // use state setter
+  secure?:boolean; // should text input be secure
   customStyling?: ViewStyle; // Marked as optional
 }
 

@@ -3,10 +3,10 @@ import React, { ReactNode } from 'react';
 import {StyleSheet, ViewStyle, View, DimensionValue } from 'react-native';
 
 interface CardProps {
-    width?:DimensionValue|undefined;
+    width?:DimensionValue|undefined; 
     height?:DimensionValue|undefined;
     children?:ReactNode;
-    customStyling?: ViewStyle; // Marked as optional
+    customStyling?: ViewStyle; // Extra styling
 }
 
 const Card: React.FC<CardProps> = ({ width="90%", height="10%", children, customStyling = {} }) => {

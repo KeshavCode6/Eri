@@ -1,9 +1,12 @@
-import { View, Text, ViewStyle, TextStyle } from 'react-native'
+import { Text, ViewStyle, TextStyle } from 'react-native'
 import React, { ReactNode } from 'react'
+
+// script with custom components with applied styling
+// may be less efficient idk tbh, but it prevents having to specify style over and over again
 
 interface HeaderProps {
   children?: ReactNode;
-  customStyling?: ViewStyle; // Marked as optional
+  customStyling?: ViewStyle; // optional extra styling
 }
 
 export const Header1 = ({ children, customStyling }: HeaderProps) => {

@@ -5,10 +5,12 @@ import { router } from "expo-router";
 const auth = getAuth();
 
 function protectedRoute() {
+  // Sending the user back to the home page if they are not authenticated
   useEffect(() => {
+    // unsubbing after because thats better somehow
     const unsubscribeFromAuthStateChanged = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        router.push("/(auth)/authentication")
+        router.navigate("/(auth)/authentication")
       }
     });
 

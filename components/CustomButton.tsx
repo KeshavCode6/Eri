@@ -4,14 +4,15 @@ import COLORS from "@/constants/Colors"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 interface CustomButtonProps {
-    title?: string;
-    icon?: ReactNode;
-    press: () => void;
-    outline?: boolean;
-    customStyling?: ViewStyle; // Marked as optional
+    title?: string; // buttons text
+    icon?: ReactNode; // button's icon
+    press: () => void; // callback function
+    outline?: boolean; // Should button be outlined or solid UI
+    customStyling?: ViewStyle; // Extra Styling If needed
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, customStyling = {}, outline }) => {
+    // picking correct style based on button type
     let buttonStyle = styles.button;
     let buttonTextStyle = styles.buttonText;
 

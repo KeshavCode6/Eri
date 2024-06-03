@@ -1,24 +1,18 @@
 import { FirebaseError, initializeApp } from "firebase/app";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { GoogleAuthProvider } from "firebase/auth";
 import 'firebase/compat/auth';
 import firebase from 'firebase/compat/app';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDN6by5r9F3ACbu9n_IRDbTErvNTPVqEnM",
-  authDomain: "eriapp-44be1.firebaseapp.com",
-  projectId: "eriapp-44be1",
-  storageBucket: "eriapp-44be1.appspot.com",
-  messagingSenderId: "353666583822",
-  appId: "1:353666583822:web:aebd57b1e0e6d7260e1b5f",
-  measurementId: "G-XGKMLQX8ZS"
-};
+import useAuth from "@/hooks/useAuth";
+import { router } from "expo-router";
+import { getReactNativePersistence, initializeAuth } from "firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage"
+import { firebaseConfig } from "./firebaseConfig";
 
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
 
 
 export const handleAuthError = (error: FirebaseError) => {
@@ -49,3 +43,10 @@ export const handleAuthError = (error: FirebaseError) => {
     return "Something went wrong";
   }
 }
+
+
+export const loggedOutCheck = () => {
+  if (auth.currentUser) {
+    router.navigate("/(tabs)/home");
+  }
+};

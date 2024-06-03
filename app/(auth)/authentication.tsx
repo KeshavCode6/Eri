@@ -1,30 +1,36 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "firebase/auth"
-import { handleAuthError } from "@/constants/firebase"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
+import { auth, handleAuthError, loggedOutCheck } from "@/constants/firebase"
 import { FirebaseError } from 'firebase/app';
-import useAuth from '@/hooks/useAuth';
 import COLORS from '@/constants/Colors';
 import styles from '@/constants/styles';
 import { Header2, Header1 } from '@/components/CustomUI';
 import InputWithIcon from '@/components/InputWithIcon';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome';
-import firebase from 'firebase/compat/app';
 
 interface PageProps {
-  switchPage: (page: string) => void;
+  switchPage: (page: string) => void; // setter function to switch from login to signup
 }
 
 const AuthScreen = () => {
-  const { screenPage } = useLocalSearchParams();
-  const [page, setCurrentPage] = useState(screenPage || "login");
+  const { screenPage } = useLocalSearchParams(); // getting router params on page switch
+  const [page, setCurrentPage] = useState(screenPage || "login"); // using page provided, defaulting to login
 
+  // making sure user is logged out on mount
+  useEffect(() => {
+    loggedOutCheck();
+  }, [router]);
+  
+
+  // switching active page (login or signup)
   const switchPage = (page: string) => {
     setCurrentPage(page);
   };
 
+  // conditionally rendering page depending on active UI. Default container for both
   return (
     <View style={{ justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
       {page === "login" ? <Login switchPage={switchPage} /> : <Signup switchPage={switchPage} />}
@@ -32,15 +38,19 @@ const AuthScreen = () => {
 };
 
 function Login({ switchPage }: PageProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  loggedOutCheck();
+  const [email, setEmail] = useState(''); // users email
+  const [password, setPassword] = useState(''); // users password
+  const [error, setError] = useState(''); // showing any login errors
+
 
   const handleLogin = async () => {
+    console.log("Log in Attempted")
     try {
-      await signInWithEmailAndPassword(firebase.auth(), email, password);
+      await signInWithEmailAndPassword(auth, email, password);
+      router.navigate("/(tabs)/home")
+      console.log("Logged in Successfully")
     } catch (error) {
+      console.error("Login Error:", error)
       if (error instanceof FirebaseError) {
         let errorText = handleAuthError(error);
         setError(errorText);
@@ -69,24 +79,35 @@ function Login({ switchPage }: PageProps) {
 
 
 function Signup({ switchPage }: PageProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confPassword, setConfPassword] = useState('');
-  const [error, setError] = useState('');
-  const [created, setCreated] = useState(false);
+  const [email, setEmail] = useState(''); // user email
+  const [password, setPassword] = useState(''); // user password
+  const [confPassword, setConfPassword] = useState(''); // confirming users password
+  const [error, setError] = useState(''); // showing signup email
+  const [created, setCreated] = useState(false); // whether or not the user has been made or not
 
   const handleSignup = async () => {
     try {
-      await createUserWithEmailAndPassword(firebase.auth(), email, password).then(()=>{
-        firebase.auth().currentUser?.sendEmailVerification({
-          handleCodeInApp:true,
-          url:'https://eriapp-44be1.firebaseapp.com'
-        }).then(()=>{
-          setCreated(true);
-        })
-      })
+      // making sure passwords match
+      if(!(confPassword==password)){
+        setError("Passwords do not match!")
+        return;
+      }
+      await createUserWithEmailAndPassword(auth, email, password);
       
+      // Check if the currentUser object exists and is not null
+      if (auth.currentUser) {
+        await sendEmailVerification(auth.currentUser, {
+          handleCodeInApp: true,
+          url: 'https://eriapp-44be1.firebaseapp.com'
+        });
+        console.log('Verification email sent.');
+        setCreated(true)
+        // Set created to true or handle accordingly
+      } else {
+        console.error('Signup Error, No user is currently signed in.');
+      }
     } catch (error) {
+      console.error("Signup Error:", error)
       if (error instanceof FirebaseError) {
         let errorText = handleAuthError(error);
         setError(errorText);
@@ -94,6 +115,7 @@ function Signup({ switchPage }: PageProps) {
     }
   };
 
+  // if user has been created, show the screen asking them to verify email
   if(created){
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
@@ -117,14 +139,6 @@ function Signup({ switchPage }: PageProps) {
     </>
   );
 }
-
-const loggedOutCheck = () => {
-  const { user } = useAuth();
-  if (user) {
-    router.push("/(tabs)/home");
-  }
-};
-
 
 
 var customStyles = StyleSheet.create({
@@ -162,3 +176,4 @@ var customStyles = StyleSheet.create({
 });
 
 export default AuthScreen;
+

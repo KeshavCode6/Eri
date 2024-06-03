@@ -2,8 +2,14 @@ import CustomButton from "@/components/CustomButton";
 import { Header1, Header2, Header3 } from '@/components/CustomUI';
 import { router } from "expo-router";
 import { Text, View } from "react-native";
-
+import {loggedOutCheck} from "@/constants/firebase"
+import { useEffect } from "react";
 export default function Index() {
+  // checking if user is logged out on mount
+  useEffect(() => {
+    loggedOutCheck();
+  }, [router]);
+
   return (
     <View
       style={{
