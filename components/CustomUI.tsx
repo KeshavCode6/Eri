@@ -1,5 +1,5 @@
-import { Text, ViewStyle, TextStyle } from 'react-native'
-import React, { ReactNode } from 'react'
+import { Text, ViewStyle, TextStyle, View } from 'react-native'
+import React, { Children, ReactNode } from 'react'
 
 // script with custom components with applied styling
 // may be less efficient idk tbh, but it prevents having to specify style over and over again
@@ -7,6 +7,14 @@ import React, { ReactNode } from 'react'
 interface HeaderProps {
   children?: ReactNode;
   customStyling?: ViewStyle; // optional extra styling
+}
+
+export const CenteredView = ({children, customStyling}:HeaderProps) =>{
+  return (
+    <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
+      {children}
+    </View>
+  );
 }
 
 export const Header1 = ({ children, customStyling }: HeaderProps) => {

@@ -1,11 +1,9 @@
 import { FirebaseError, initializeApp } from "firebase/app";
-import 'firebase/compat/auth';
-import firebase from 'firebase/compat/app';
-import useAuth from "@/hooks/useAuth";
 import { router } from "expo-router";
-import { getReactNativePersistence, initializeAuth } from "firebase/auth";
+import { getReactNativePersistence, initializeAuth, onAuthStateChanged } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage"
 import { firebaseConfig } from "./firebaseConfig";
+import { useEffect } from "react";
 
 
 // Initialize Firebase
@@ -44,9 +42,21 @@ export const handleAuthError = (error: FirebaseError) => {
   }
 }
 
-
+// making sure user is not logged in
 export const loggedOutCheck = () => {
   if (auth.currentUser) {
-    router.navigate("/(tabs)/home");
+    router.navigate("/(tabs)/(home)/homescreen");
   }
 };
+
+
+// going back to auth page if not logged in
+export function protectedRoute() {
+  const unsubscribe = auth.onAuthStateChanged(user => {
+    if (!user) {
+      router.navigate("/(auth)/authentication");
+    }
+  });
+
+  return () => unsubscribe(); 
+}

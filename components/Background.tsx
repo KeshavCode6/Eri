@@ -27,7 +27,7 @@ const GradientBackground: React.FC<CustomBackgroundProps> = ({ children, customS
 export const LoginImageBackground: React.FC<CustomBackgroundProps> = ({ children, customStyling}) => {
     
     return (
-        <ImageBackground resizeMode="cover" source={require("@/assets/background.png")} style={[styles.container,customStyling]}>
+        <ImageBackground resizeMode="cover" source={require("@/assets/images/splash.png")} style={[styles.container,customStyling]}>
             {children}
         </ImageBackground>
     )

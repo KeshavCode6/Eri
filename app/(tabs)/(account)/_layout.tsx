@@ -6,9 +6,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
-        <Stack.Screen name="index" options={{headerShown:false}} />
-        <Stack.Screen name="(tabs)" options={{headerShown:false}} />
-        <Stack.Screen name="(auth)" options={{headerShown:false}} />
+        <Stack.Screen name="accountscreen" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
 
