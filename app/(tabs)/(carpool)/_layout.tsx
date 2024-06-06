@@ -6,7 +6,9 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
-        <Stack.Screen name="errandscreen" options={{headerShown:false}} />
+        <Stack.Screen name="carpoolscreen" options={{headerShown:false}} />
+        <Stack.Screen name="findcarpool" options={{headerShown:false}} />
+        <Stack.Screen name="createcarpool" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
 

@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
-        <Stack.Screen name="barterscreen" options={{headerShown:false}} />
+        <Stack.Screen name="routescreen" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
 

@@ -2,7 +2,7 @@
 const COLORS = {
     dark: '#333',
     secondary: '#555',
-    accent: '#2f6bed', 
+    accent: '#62d132', 
     error:"#CC5200"
 }
 

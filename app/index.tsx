@@ -24,7 +24,7 @@ export default function Index() {
     >
       <Header1>Welcome to Eri!</Header1>
       <Text style={{ color: "white", width: 300, textAlign: "center" }}>
-        <Text>Get things done for you from the comfort of your home!</Text>
+        <Text>Navigate Smarter, Drive Greener!</Text>
       </Text>
 
       <View style={{ gap: 2, marginTop: 20 }}>

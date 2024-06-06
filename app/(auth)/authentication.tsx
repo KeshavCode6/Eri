@@ -47,7 +47,7 @@ function Login({ switchPage }: PageProps) {
     console.log("Log in Attempted")
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.navigate("/(tabs)/home")
+      router.navigate("/(tabs)/(home)/homescreen")
       console.log("Logged in Successfully")
     } catch (error) {
       console.error("Login Error:", error)

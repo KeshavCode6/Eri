@@ -32,7 +32,7 @@ const forgotPass = () => {
     return (
       <CenteredView>
         <Backbutton href="/(auth)/authentication" />
-        <Header2>Reset Email has been sent!</Header2>
+        <Header1>Reset Email has been sent!</Header1>
         <CustomButton title="Go to login" customStyling={{ height: 40, marginTop: 15, backgroundColor: COLORS.accent }} press={() => { router.navigate("/(auth)/authentication") }} />
       </CenteredView>
     );

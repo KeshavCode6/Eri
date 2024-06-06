@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ViewStyle, DimensionValue } from 'react-native';
 import COLORS from "@/constants/Colors"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Card from './Card';
 
 interface CustomButtonProps {
     title?: string; // buttons text
@@ -9,6 +10,7 @@ interface CustomButtonProps {
     press: () => void; // callback function
     outline?: boolean; // Should button be outlined or solid UI
     customStyling?: ViewStyle; // Extra Styling If needed
+    size?:DimensionValue; // Only for icon buttons, idk this might be messy
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, customStyling = {}, outline }) => {
@@ -29,6 +31,19 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, cu
         </TouchableOpacity>
     );
 };
+
+export const IconButton: React.FC<CustomButtonProps> = ({icon, press, customStyling = {}, size}) => {
+    return (
+        <TouchableOpacity style={[{width:size, aspectRatio:"1/1", padding:1}]} onPress={press}>
+            <Card width={"100%"} height={"100%"}>
+                {icon}
+
+            </Card>
+        </TouchableOpacity>
+    );
+};
+
+
 
 const styles = StyleSheet.create({
     button: {

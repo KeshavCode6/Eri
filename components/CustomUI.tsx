@@ -35,7 +35,7 @@ export const Header2 = ({ children, customStyling }: HeaderProps) => {
   return (
     <Text
       style={[{
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 700,
         color: "white"
       }, customStyling]}

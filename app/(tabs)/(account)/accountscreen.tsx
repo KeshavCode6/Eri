@@ -43,7 +43,7 @@ export default function Index() {
         </View>
       </View>
       <View style={[customStyles.slot, { marginTop: 30 }]}>
-        <Text style={customStyles.text}>Gmail</Text>
+        <Text style={customStyles.text}>Email</Text>
         <View style={customStyles.area}>
           <TextInput
             style={customStyles.textInput}
@@ -79,7 +79,6 @@ export default function Index() {
 
       <View style={customStyles.buttons}>
         <CustomButton title="Save" customStyling={{ backgroundColor: COLORS.accent, width: 300, height: 50 }} press={() => { }} />
-        <CustomButton title="Logout" customStyling={{ backgroundColor: "#2e2e2e", width: 300, height: 50 }} press={() => { signOut(auth) }} />
       </View>
     </View>
   );

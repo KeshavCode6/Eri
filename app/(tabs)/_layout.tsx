@@ -14,17 +14,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(barter)"
+        name="(route)"
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="handshake" color={color} />,
-          tabBarLabel: "Barter",
+          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="map" color={color} />,
+          tabBarLabel: "Eco Routes",
         }}
       />
       <Tabs.Screen
-        name="(errand)"
+        name="(carpool)"
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="shopping-bag" color={color} />,
-          tabBarLabel: "Errands",
+          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="car" color={color} />,
+          tabBarLabel: "Car Pool",
         }}
       />
         <Tabs.Screen

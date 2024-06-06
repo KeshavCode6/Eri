@@ -1,2 +1,2 @@
 # Eri
-Errand running app
+Environmentally friendly app
