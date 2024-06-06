@@ -34,8 +34,9 @@ export default function FindCarpool() {
                 <Header2>Carpool to Alliance</Header2>
                 <Text style={{ color: COLORS.accent }}>Departure: <Text style={{ color: "white" }}>8:00 AM</Text></Text>
                 <Text style={{ color: COLORS.accent }}>People: <Text style={{ color: "white" }}>1/9</Text></Text>
+                <Text style={{ color: COLORS.accent }}>Days: <Text style={{ color: "white" }}>Saturday and Sunday</Text></Text>
                 <Text style={{ color: COLORS.accent }}>Area: <Text style={{ color: "white" }}>Lambert Area</Text></Text>
-                <CustomButton title="Join" customStyling={{width:175, height:35, marginTop:10}} press={()=>{}}/>
+                <CustomButton title="Join" customStyling={{width:175, height:25, marginTop:5}} press={()=>{}}/>
               </View>
               <View style={{ alignItems: "center", width: 120, justifyContent: "center", height: "100%", flexDirection: "column" }}>
                 <Image source={{ uri: "https://images.squarespace-cdn.com/content/v1/5f9b75a7f63ff02eeba240e1/1608231099862-8IUC3Z8HD3RM74MZDBUB/the-alliance-logo-circle.png" }} style={{ borderRadius: 10, width: 100, height: 100 }} />

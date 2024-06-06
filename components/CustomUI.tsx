@@ -17,6 +17,14 @@ export const CenteredView = ({children, customStyling}:HeaderProps) =>{
   );
 }
 
+export const ListView = ({children, customStyling}:HeaderProps) =>{
+  return (
+    <View style={[{ justifyContent: 'flex-start', alignItems: 'center', height: '100%', width: '100%' }, customStyling]}>
+      {children}
+    </View>
+  );
+}
+
 export const Header1 = ({ children, customStyling }: HeaderProps) => {
   return (
     <Text
@@ -46,7 +54,6 @@ export const Header2 = ({ children, customStyling }: HeaderProps) => {
 }
 
 
-
 export const Header3 = ({ children, customStyling }: HeaderProps) => {
   return (
     <Text
@@ -60,6 +67,24 @@ export const Header3 = ({ children, customStyling }: HeaderProps) => {
     </Text>
   )
 }
+
+export const LeftAlignedHeader2 = ({ children, customStyling }: HeaderProps) => {
+  return (
+    <View style={{width:"100%", flexDirection:"row", justifyContent:"flex-start"}}>
+      <Text
+        style={[{
+          fontSize: 15,
+          fontWeight: 700,
+          color: "white"
+        }, customStyling]}
+      >
+        {children}
+      </Text>
+    </View>
+  )
+}
+
+
 
 interface TextProps {
     children?: ReactNode;

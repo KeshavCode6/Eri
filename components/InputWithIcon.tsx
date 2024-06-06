@@ -1,9 +1,9 @@
-import { View, StyleSheet, TextInput, ColorValue, ViewStyle } from 'react-native';
+import { View, StyleSheet, TextInput, ColorValue, KeyboardTypeOptions , ViewStyle } from 'react-native';
 import React, { ReactNode } from 'react';
 import styles from '@/constants/styles';
 
 interface InputProps {
-  icon:ReactNode; // icon of input (FontAwesome5)
+  icon?:ReactNode; // icon of input (FontAwesome5)
   color?: ColorValue; // color of text
   placeHolder?: string; // placeholder text
   background?: ColorValue; // background color
@@ -11,9 +11,10 @@ interface InputProps {
   setInput?: (page: string) => void; // use state setter
   secure?:boolean; // should text input be secure
   customStyling?: ViewStyle; // Marked as optional
+  type?:KeyboardTypeOptions;
 }
 
-const InputWithIcon = ({ icon, color = 'white', input, placeHolder = 'Skibidi', secure, setInput, background = 'black', customStyling }: InputProps) => {
+const InputWithIcon = ({ icon, color = 'white', input, placeHolder = 'Skibidi', secure, setInput, background = 'black', customStyling, type="default" }: InputProps) => {
   return (
     <View style={[styles.input, customStyles.searchSection, { backgroundColor: background }, customStyling]}>
       {icon}
@@ -24,6 +25,7 @@ const InputWithIcon = ({ icon, color = 'white', input, placeHolder = 'Skibidi', 
         onChangeText={setInput}
         value={input}
         secureTextEntry={secure}
+        keyboardType={type}
       />
     </View>
   );
