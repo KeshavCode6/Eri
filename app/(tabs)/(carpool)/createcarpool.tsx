@@ -3,16 +3,14 @@ import React, { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { protectedRoute } from '@/constants/firebase';
 import { useRootNavigationState } from 'expo-router';
-import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
-import { ListView, Header1, LeftAlignedHeader2, Header3, WhiteText, CenteredView } from '@/components/CustomUI';
+import { View, StyleSheet} from 'react-native';
+import { ListView, Header1, LeftAlignedHeader2, WhiteText } from '@/components/CustomUI';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import COLORS from '@/constants/Colors';
 import Backbutton from '@/components/Backbutton';
 import InputWithIcon from '@/components/InputWithIcon';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '@/components/CustomButton';
-import DropDownPicker from 'react-native-dropdown-picker';
-import WeekdayTimePicker from '@/components/WeekdayTimePicker';
+import TimingsPicker from '@/components/TimingsPicker';
 
 export default function CreateCarpool() {
   const rootNavigationState = useRootNavigationState();
@@ -28,7 +26,7 @@ export default function CreateCarpool() {
     <View style={{ flex: 1, paddingTop: 75, justifyContent: "flex-start" }}>
       <Backbutton marginLeft={10} href="/(tabs)/(carpool)/carpoolscreen" />
       <Header1 customStyling={{ marginLeft: 10 }}>Create a car pool group</Header1>
-      <WhiteText customStyling={{ marginLeft: 10, marginBottom: 10 }}>Enter in the following information create a carpooling group request</WhiteText>
+      <WhiteText customStyling={{ marginLeft: 10, marginBottom: 10 }}>Enter in the following information create a carpooling group request. All information can be edited later!</WhiteText>
 
       <ListView customStyling={{ gap: 15, marginTop: 10, marginLeft: 10 }}>
         <View style={{ width: "100%" }}>
@@ -49,7 +47,7 @@ export default function CreateCarpool() {
         <View style={{ width: "100%"}}>
           <LeftAlignedHeader2>Timings</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Edit all timing related information using the popup modal below</WhiteText>
-          <WeekdayTimePicker />
+          <TimingsPicker />
         </View>
         <CustomButton icon={<FontAwesome5 size={15} name="arrow-right" color={"white"} />} press={() => { }} customStyling={{ width: 150, height: 40, marginTop:40}} />
 

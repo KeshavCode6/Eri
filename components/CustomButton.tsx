@@ -11,9 +11,10 @@ interface CustomButtonProps {
     outline?: boolean; // Should button be outlined or solid UI
     customStyling?: ViewStyle; // Extra Styling If needed
     size?:DimensionValue; // Only for icon buttons, idk this might be messy
+    fontSize?:number ;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, customStyling = {}, outline }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, customStyling = {}, outline, fontSize}) => {
     // picking correct style based on button type
     let buttonStyle = styles.button;
     let buttonTextStyle = styles.buttonText;
@@ -26,7 +27,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, cu
         <TouchableOpacity style={[buttonStyle, customStyling]} onPress={press}>
             {icon}
             {title.length > 0 ? (
-                <Text style={buttonTextStyle}>{title}</Text>
+                <Text style={[buttonTextStyle, {fontSize:fontSize}]}>{title}</Text>
             ) : null}
         </TouchableOpacity>
     );
