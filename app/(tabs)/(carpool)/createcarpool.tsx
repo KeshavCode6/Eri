@@ -1,5 +1,5 @@
 // app/index.js
-import React from 'react';
+import React, { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { protectedRoute } from '@/constants/firebase';
 import { useRootNavigationState } from 'expo-router';
@@ -9,8 +9,10 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import COLORS from '@/constants/Colors';
 import Backbutton from '@/components/Backbutton';
 import InputWithIcon from '@/components/InputWithIcon';
-import NumericInput from 'react-native-numeric-input'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomButton from '@/components/CustomButton';
+import DropDownPicker from 'react-native-dropdown-picker';
+import WeekdayTimePicker from '@/components/WeekdayTimePicker';
 
 export default function CreateCarpool() {
   const rootNavigationState = useRootNavigationState();
@@ -20,6 +22,7 @@ export default function CreateCarpool() {
 
   protectedRoute();
 
+  const [date, setDate] = useState(new Date());
 
   return (
     <View style={{ flex: 1, paddingTop: 75, justifyContent: "flex-start" }}>
@@ -31,27 +34,26 @@ export default function CreateCarpool() {
         <View style={{ width: "100%" }}>
           <LeftAlignedHeader2>Final Destination</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Enter where you are carpooling to. Use an address or general name if applicable</WhiteText>
-          <InputWithIcon customStyling={{ marginTop: 5, width:"95%"}} placeHolder="Destination" icon={<FontAwesome5 size={15} name="compass" color={COLORS.accent} />} />
+          <InputWithIcon customStyling={{ marginTop: 5, width: "95%" }} placeHolder="Destination" icon={<FontAwesome5 size={15} name="compass" color={COLORS.accent} />} />
         </View>
         <View style={{ width: "100%" }}>
           <LeftAlignedHeader2>Residential area</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Enter a community name or area defined by well known landmark (eg: Riverbrooke community)</WhiteText>
-          <InputWithIcon customStyling={{ marginTop: 5, width:"95%"}} placeHolder="Area" icon={<FontAwesome5 size={15} name="compass" color={COLORS.accent} />} />
+          <InputWithIcon customStyling={{ marginTop: 5, width: "95%" }} placeHolder="Area" icon={<FontAwesome5 size={15} name="compass" color={COLORS.accent} />} />
         </View>
         <View style={{ width: "100%" }}>
           <LeftAlignedHeader2>Seat Availability</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Enter how many passengers you are interested in carpooling with</WhiteText>
-          <InputWithIcon customStyling={{ marginTop: 5, width:"95%"}} type="numeric" placeHolder="Seats" icon={<FontAwesome5 size={15} name="car" color={COLORS.accent} />} />
+          <InputWithIcon customStyling={{ marginTop: 5, width: "95%" }} type="numeric" placeHolder="Seats" icon={<FontAwesome5 size={15} name="car" color={COLORS.accent} />} />
         </View>
-        <View style={{ width: "100%" }}>
-          <LeftAlignedHeader2>Timing</LeftAlignedHeader2>
-          <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Enter what days and times you want to go</WhiteText>
-          <InputWithIcon customStyling={{ marginTop: 5, width:"95%"}} placeHolder="Time" icon={<FontAwesome5 size={15} name="clock" color={COLORS.accent} />} />
-          <InputWithIcon customStyling={{ marginTop: 5, width:"95%"}} placeHolder="Days" icon={<FontAwesome5 size={15} name="calendar" color={COLORS.accent} />} />
+        <View style={{ width: "100%"}}>
+          <LeftAlignedHeader2>Timings</LeftAlignedHeader2>
+          <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>Edit all timing related information using the popup modal below</WhiteText>
+          <WeekdayTimePicker />
         </View>
-        <CustomButton icon={<FontAwesome5 size={15} name="arrow-right" color={"white"} />} press={()=>{}} customStyling={{width:150, height:30}}/>
-      </ListView>
+        <CustomButton icon={<FontAwesome5 size={15} name="arrow-right" color={"white"} />} press={() => { }} customStyling={{ width: 150, height: 40, marginTop:40}} />
 
+      </ListView>
     </View>
   );
 }
