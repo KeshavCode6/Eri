@@ -9,6 +9,7 @@ export default function RootLayout() {
         <Stack.Screen name="carpoolscreen" options={{headerShown:false}} />
         <Stack.Screen name="findcarpool" options={{headerShown:false}} />
         <Stack.Screen name="createcarpool" options={{headerShown:false}} />
+        <Stack.Screen name="confirmcreatecarpool" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
 

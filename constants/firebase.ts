@@ -1,9 +1,9 @@
 import { FirebaseError, initializeApp } from "firebase/app";
 import { router } from "expo-router";
+import { getFirestore } from "firebase/firestore";
 import { getReactNativePersistence, initializeAuth, onAuthStateChanged } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage"
 import { firebaseConfig } from "./firebaseConfig";
-import { useEffect } from "react";
 
 
 // Initialize Firebase
@@ -11,6 +11,7 @@ export const app = initializeApp(firebaseConfig);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
+export const db = getFirestore(app);
 
 
 export const handleAuthError = (error: FirebaseError) => {
