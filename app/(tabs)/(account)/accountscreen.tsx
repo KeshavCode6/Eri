@@ -51,24 +51,9 @@ export default function Index() {
             placeholder={user?.email || ""}
           />
           <TouchableOpacity>
-            <FontAwesome5 name="undo" size={15} color={COLORS.accent} />
+            <FontAwesome5 name="lock" size={15} color={COLORS.accent} />
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={[customStyles.slot, { marginTop: 30 }]}>
-        <Text style={customStyles.text}>Interests</Text>
-
-        <View style={customStyles.area}>
-          <TextInput
-            style={customStyles.textInput}
-            placeholderTextColor={COLORS.accent}
-            placeholder='Youtube, Fishing, Driving'
-          />
-          <TouchableOpacity>
-            <FontAwesome5 name="undo" size={15} color={COLORS.accent} />
-          </TouchableOpacity>
-        </View>
-
       </View>
       <View style={[customStyles.slot, { marginTop: 30 }]}>
         <Text style={customStyles.text}>Password</Text>

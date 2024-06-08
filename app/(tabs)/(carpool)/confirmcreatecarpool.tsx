@@ -10,27 +10,35 @@ import Backbutton from '@/components/Backbutton';
 import CustomButton from '@/components/CustomButton';
 import COLORS from '@/constants/Colors';
 import CarpoolCard from '@/components/CarpoolCard';
+import InputWithIcon from '@/components/InputWithIcon';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 
 export function ConfirmCreateCarpool() {
   const rootNavigationState = useRootNavigationState();
 
   if (!rootNavigationState?.key) return null;
-  const { user } = useAuth();
-
   protectedRoute();
-
   const { data } = useLocalSearchParams(); // getting router params on page switch
+  const [error, setError] = useState(''); // showing any login errors
+
   // @ts-ignore
   let parsedData = JSON.parse(data);
 
   const saveRequest = async () => {
-    try {
-      const docRef = await addDoc(collection(db, "carpool-requests"), parsedData
-      );
-      console.log("Document written with ID: ", docRef.id);
-      router.navigate("/(tabs)/(carpool)/carpoolscreen")
-    } catch (e) {
-      console.error("Error adding document: ", e);
+    let message = validateData(parsedData);
+    if (message == true) {
+      try {
+        const docRef = await addDoc(collection(db, "carpool-requests"), parsedData
+        );
+        console.log("Document written with ID: ", docRef.id);
+        router.navigate("/(tabs)/(carpool)/carpoolscreen")
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    }
+    else {
+      setError(message)
     }
   }
 
@@ -45,22 +53,69 @@ export function ConfirmCreateCarpool() {
         </WhiteText>
 
         <ListView>
-          <CarpoolCard
-            title="Carpool to Alliance"
-            departureTime="8:00 AM"
-            peopleCount="1/9"
-            days="Saturday and Sunday"
-            area="Lambert Area"
-            imageUrl="https://images.squarespace-cdn.com/content/v1/5f9b75a7f63ff02eeba240e1/1608231099862-8IUC3Z8HD3RM74MZDBUB/the-alliance-logo-circle.png"
-          />
-          <CustomButton title="Confirm and Create" customStyling={{ height: 40, marginTop: 15, backgroundColor: COLORS.accent }} press={() => { saveRequest(); }} />
+          <Text style={{ color: "gray" }}>No similar rides found...</Text>
+          <CustomButton title="Create" customStyling={{ height: 40, marginTop: 15, backgroundColor: COLORS.accent }} press={() => { saveRequest(); }} />
+          <Text style={{ color: "red", marginTop: 2.5, marginBottom: 2.5 }}>{error}</Text>
         </ListView>
-
       </View>
     </>
 
   );
 };
+
+function validateData(data: any) {
+  try {
+    let count = 0
+    let invalidDay = false;
+    //@ts-ignore
+    data.days.forEach(element => {
+      if (!element) {
+        if (count == 6) {
+          console.log(count)
+          invalidDay = true;
+        }
+        count += 1
+      }
+    });
+
+    if(invalidDay){
+      return "Please select at least one day";
+    }
+
+    if (typeof data.title !== 'string' || data.title.length <= 0) {
+      return "Please enter a request title";
+    }
+
+    if (typeof data.destination !== 'string' || data.destination.length <= 0) {
+      return "Please enter a destination";
+    }
+
+    if (typeof data.area !== 'string' || data.area.length <= 0) {
+      return "Please enter a general residential area";
+    }
+
+    if (typeof data.seats !== 'number' || data.seats < 0) {
+
+      return "Please enter a proper seat number estimate";
+    }
+
+    if (!Array.isArray(data.days) || data.days.length !== 7) {
+      return "Something went wrong with day selection";
+    }
+
+    if (typeof data.time !== 'string' || data.time.length <= 0) {
+      return "Something went wrong with time selection";
+    }
+
+    if (typeof data.author !== 'string' || data.author.length <= 0) {
+      return "Something went wrong with author define";
+    }
+
+    return true;
+  } catch {
+    return "Something went wrong!";
+  }
+}
 
 
 const customStyles = StyleSheet.create({

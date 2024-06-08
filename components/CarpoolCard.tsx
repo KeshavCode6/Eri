@@ -16,7 +16,7 @@ interface CarpoolCardProps {
 
 const CarpoolCard: React.FC<CarpoolCardProps> = ({ title, departureTime, peopleCount, days, area, imageUrl }) => {
   return (
-    <Card height={160} customStyling={{ backgroundColor: "#383838", shadowColor: "#383838" }}>
+    <Card height={125} customStyling={{ backgroundColor: "#383838", shadowColor: "#383838" }}>
       <View style={styles.cardContent}>
         <View style={styles.row}>
           <View style={styles.leftContent}>
@@ -77,10 +77,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: COLORS.accent,
-    marginBottom: 5,
+    marginBottom: 1,
+    fontSize:10
   },
   whiteText: {
     color: "white",
+    fontSize:10
   },
   button: {
     width: 175,
@@ -95,3 +97,4 @@ const styles = StyleSheet.create({
 });
 
 export default CarpoolCard;
+

@@ -25,17 +25,25 @@ export function CreateCarpool() {
   const [area, setArea] = useState('');
   const [seats, setSeats] = useState('');
   const [timings, setTimings] = useState({ days: [false, false, false, false, false, false, false], time: '' });
+  const [title, setTitle] = useState("");
 
   const saveRequest = async () => {
+    let seatCount = 0;
+    try{
+      seatCount = parseInt(seats)
+    } catch{
+      seatCount=-1;
+    }
     let data = {
       //@ts-ignore
       area: area,
-      seats: seats,
+      seats: seatCount,
       destination: destination,
       //@ts-ignore
       days: timings.days,
       time: timings.time,
-      author:auth.currentUser?.uid
+      author:auth.currentUser?.uid,
+      title:title
     }
     router.push({
       pathname: '/(tabs)/(carpool)/confirmcreatecarpool',
@@ -54,6 +62,19 @@ export function CreateCarpool() {
       </WhiteText>
 
       <ListView customStyling={{ gap: 15, marginTop: 10, marginLeft: 10 }}>
+      <View style={{ width: "100%" }}>
+          <LeftAlignedHeader2>Description</LeftAlignedHeader2>
+          <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>
+            Enter a fitting title for your request so others can find it
+          </WhiteText>
+          <InputWithIcon
+            customStyling={{ marginTop: 5, width: "95%" }}
+            placeHolder="Title"
+            icon={<FontAwesome5 size={15} name="map" color={COLORS.accent} />}
+            input={title}
+            setInput={setTitle}
+          />
+        </View>
         <View style={{ width: "100%" }}>
           <LeftAlignedHeader2>Final Destination</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>
@@ -104,7 +125,7 @@ export function CreateCarpool() {
         <CustomButton
           icon={<FontAwesome5 size={15} name="arrow-right" color={"white"} />}
           press={() => { saveRequest() }}
-          customStyling={{ width: 150, height: 40, marginTop: 40 }}
+          customStyling={{ width: 150, height: 40 }}
         />
       </ListView>
     </View>

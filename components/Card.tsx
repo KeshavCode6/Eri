@@ -20,9 +20,9 @@ const Card: React.FC<CardProps> = ({ width = "90%", height = "10%", children, cu
     );
 };
 
-export const TouchableCard: React.FC<CardProps> = ({ width = "90%", height = "10%", children, customStyling = {}, press}) => {
+export const TouchableCard: React.FC<CardProps> = ({ width = "90%", height = 150, children, customStyling = {}, press}) => {
     return (
-        <TouchableOpacity onPress={press} style={{ width: width, height: height}}>
+        <TouchableOpacity onPress={press} style={{ width: width, height}}>
             <Card width={"100%"} height={"100%"} customStyling={customStyling}>
                 {children}
             </Card>
