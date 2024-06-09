@@ -12,6 +12,5 @@ export default function RootLayout() {
         <Stack.Screen name="confirmcreatecarpool" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
-
   );
 }

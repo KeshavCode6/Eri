@@ -12,7 +12,7 @@ interface CustomButtonProps {
 // router.navigate not .push for animation
 const Backbutton: React.FC<CustomButtonProps> = ({ href, marginLeft=30}) => {
     return (
-        <TouchableOpacity style={{position:"absolute", top:50, left:marginLeft, width:100, height:100}} onPress={()=>{router.navigate(href)}}> 
+        <TouchableOpacity style={{position:"absolute", top:50, left:marginLeft, width:150, height:150}} onPress={()=>{router.navigate(href)}}> 
             <FontAwesome5 name="arrow-left" size={15} color={COLORS.accent}/>
         </TouchableOpacity>
     );

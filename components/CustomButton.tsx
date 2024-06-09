@@ -36,7 +36,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, cu
 export const IconButton: React.FC<CustomButtonProps> = ({icon, press, customStyling = {}, size}) => {
     return (
         <TouchableOpacity style={[{width:size, aspectRatio:"1/1", padding:1}]} onPress={press}>
-            <Card width={"100%"} height={"100%"}>
+            <Card width={"100%"} height={"100%"} customStyling={customStyling}>
                 {icon}
 
             </Card>

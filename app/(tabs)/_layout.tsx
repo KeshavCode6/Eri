@@ -16,8 +16,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(route)"
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="map" color={color} />,
-          tabBarLabel: "Eco Routes",
+          tabBarIcon: ({ color }) => <FontAwesome5 size={25} name="map-marker-alt" color={color} />,
+          tabBarLabel: "Maps",
         }}
       />
       <Tabs.Screen

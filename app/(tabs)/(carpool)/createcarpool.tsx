@@ -61,7 +61,7 @@ export function CreateCarpool() {
         Enter in the following information to create a carpooling group request. All information can be edited later!
       </WhiteText>
 
-      <ListView customStyling={{ gap: 15, marginTop: 10, marginLeft: 10 }}>
+      <ListView customStyling={{ gap: 15, marginTop: 5, marginLeft: 10 }}>
       <View style={{ width: "100%" }}>
           <LeftAlignedHeader2>Description</LeftAlignedHeader2>
           <WhiteText customStyling={{ fontSize: 9, maxWidth: "80%", marginTop: 3 }}>

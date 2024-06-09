@@ -33,11 +33,11 @@ const MyCarpoolCard: React.FC<CarpoolCardProps> = ({
   customStyling = { backgroundColor: "#383838", shadowColor: "#383838" } 
 }) => {
   return (
-    <TouchableCard press={()=>{router.push(`/(tabs)/(carpool)/${id}`)}}  customStyling={customStyling}>
+    <TouchableCard press={()=>{router.push(`/(tabs)/(carpool)/${id}/page`)}}  customStyling={customStyling}>
       <View style={styles.container}>
         <View style={styles.infoContainer}>
           <Text style={styles.header}>{title}</Text>
-          <Text style={styles.label}>Departure: <Text style={styles.value}>{departureTime}</Text></Text>
+          <Text style={styles.label}>Next Departure: <Text style={styles.value}>{departureTime}</Text></Text>
           <Text style={styles.label}>Driver: <Text style={styles.value}>{driver}</Text></Text>
           <Text style={styles.label}>Car: <Text style={styles.value}>{car}</Text></Text>
           <Text style={styles.label}>People: <Text style={styles.value}>{people}</Text></Text>

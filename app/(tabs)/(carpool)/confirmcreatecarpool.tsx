@@ -1,4 +1,3 @@
-// app/index.js
 import React, { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { db, protectedRoute } from '@/constants/firebase';
