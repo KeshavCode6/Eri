@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
-import { db, protectedRoute } from '@/constants/firebase';
+import { auth, db, protectedRoute } from '@/constants/firebase';
 import { router, useLocalSearchParams, useRootNavigationState } from 'expo-router';
 import { Text, StyleSheet, View } from 'react-native';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { CenteredView, Header1, Header2, LeftAlignedHeader2, ListView, WhiteText } from '@/components/CustomUI';
 import Backbutton from '@/components/Backbutton';
 import CustomButton from '@/components/CustomButton';
@@ -28,9 +28,26 @@ export function ConfirmCreateCarpool() {
     let message = validateData(parsedData);
     if (message == true) {
       try {
-        const docRef = await addDoc(collection(db, "carpool-requests"), parsedData
+        const docRef = await addDoc(collection(db, "carpools"), parsedData
         );
         console.log("Document written with ID: ", docRef.id);
+
+        
+      const userRef = collection(db, 'users');
+      const q2 = query(userRef, where('uid', '==', auth.currentUser?.uid));
+
+      try {
+        const querySnapshot2 = await getDocs(q2);
+        querySnapshot2.forEach(async (doc) => {
+          await updateDoc(doc.ref, {
+            carpools: arrayUnion(docRef.id)
+          });
+        });
+        console.log('Document updated successfully');
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
+      
         router.navigate("/(tabs)/(carpool)/carpoolscreen")
       } catch (e) {
         console.error("Error adding document: ", e);

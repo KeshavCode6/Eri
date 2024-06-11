@@ -45,7 +45,7 @@ export const handleAuthError = (error: FirebaseError) => {
 
 // making sure user is not logged in
 export const loggedOutCheck = () => {
-  if (auth.currentUser) {
+  if (auth.currentUser && auth.currentUser.emailVerified) {
     router.navigate("/(tabs)/(home)/homescreen");
   }
 };
@@ -53,11 +53,7 @@ export const loggedOutCheck = () => {
 
 // going back to auth page if not logged in
 export function protectedRoute() {
-  const unsubscribe = auth.onAuthStateChanged(user => {
-    if (!user) {
-      router.navigate("/(auth)/authentication");
-    }
-  });
-
-  return () => unsubscribe(); 
+  if (!auth.currentUser || !auth.currentUser.emailVerified) {
+    router.navigate("/(auth)/authentication");
+  }
 }

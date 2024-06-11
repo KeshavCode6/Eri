@@ -30,7 +30,7 @@ const MyCarpoolCard: React.FC<CarpoolCardProps> = ({
   imageUrl, 
   destination,
   cardHeight = 130, 
-  customStyling = { backgroundColor: "#383838", shadowColor: "#383838" } 
+  customStyling = { backgroundColor: "#242424", shadowColor: "#242424" } 
 }) => {
   return (
     <TouchableCard press={()=>{router.push(`/(tabs)/(carpool)/${id}/page`)}}  customStyling={customStyling}>

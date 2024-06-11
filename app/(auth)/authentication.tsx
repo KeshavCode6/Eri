@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
-import { auth, handleAuthError, loggedOutCheck } from "@/constants/firebase"
+import { auth, db, handleAuthError, loggedOutCheck } from "@/constants/firebase"
 import { FirebaseError } from 'firebase/app';
 import COLORS from '@/constants/Colors';
 import styles from '@/constants/styles';
 import { Header2, Header1 } from '@/components/CustomUI';
 import InputWithIcon from '@/components/InputWithIcon';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome';
+import { addDoc, collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 
 interface PageProps {
   switchPage: (page: string) => void; // setter function to switch from login to signup
@@ -47,7 +48,31 @@ function Login({ switchPage }: PageProps) {
     console.log("Log in Attempted")
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.navigate("/(tabs)/(home)/homescreen")
+
+      if(auth.currentUser?.emailVerified){
+        router.navigate("/(tabs)/(home)/homescreen")
+      }
+      else{
+        setError("Verify your email and try again!")
+        console.log("User email not verified")
+        return;
+      }
+
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('uid', '==', auth.currentUser.uid));
+      try {
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          await addDoc(usersRef, { uid: auth.currentUser.uid, carpools:[] });
+          console.log("User added to Firestore.");
+        } else {
+          console.log("User already exists in Firestore.");
+        }
+      } catch (error) {
+        console.error("Error checking or adding user:", error);
+      }
+
       console.log("Logged in Successfully")
     } catch (error) {
       console.error("Login Error:", error)
@@ -119,9 +144,8 @@ function Signup({ switchPage }: PageProps) {
   if(created){
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
-      <FontAwesome5 name='envelope' color={COLORS.accent} size={40} />
      <Header2>Verification Email sent!</Header2>
-     <CustomButton title="Go to login" customStyling={{ height: 40, marginTop:50, backgroundColor: COLORS.accent }} press={() => { router.navigate("/(auth)/authentication") }} />
+      <CustomButton title="Go to login" customStyling={{ height: 40, marginTop:15, backgroundColor: COLORS.accent }} press={() => { switchPage("login") }} />
    </View>
     );
   }

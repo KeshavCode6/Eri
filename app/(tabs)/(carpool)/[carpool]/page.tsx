@@ -11,6 +11,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import COLORS from '@/constants/Colors';
 import Card from '@/components/Card';
 import styles from '@/constants/styles';
+import MemberCard from '@/components/memberCard';
 
 export default function FindCarpool() {
   const rootNavigationState = useRootNavigationState();
@@ -26,7 +27,9 @@ export default function FindCarpool() {
   const [time, setTime] = useState("");
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
   const { carpool } = useLocalSearchParams();
+  const [members, setMembers] = useState(["nigger", "nigger", "nigger", "nigger"]);
 
   const getDocument = async () => {
     try {
@@ -38,14 +41,14 @@ export default function FindCarpool() {
         const data = docSnap.data();
         //@ts-ignore
         setArea(data.area || "");
-                //@ts-ignore
+        //@ts-ignore
         setAuthor(data.author || "");
 
         //@ts-ignore
         let days = []
         let count = 0;
         let indexToDay = { 0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday" }
-                //@ts-ignore
+        //@ts-ignore
         data.days.forEach(element => {
           if (element) {
             //@ts-ignore
@@ -55,13 +58,13 @@ export default function FindCarpool() {
         });
         //@ts-ignore
         setDays(days || []);
-                //@ts-ignore
+        //@ts-ignore
         setDestination(data.destination || "");
-                //@ts-ignore
+        //@ts-ignore
         setSeats(data.seats || 8);
-                //@ts-ignore
+        //@ts-ignore
         setTime(data.time || "");
-                //@ts-ignore
+        //@ts-ignore
         setTitle(data.title || "");
         setLoading(false);
       } else {
@@ -101,74 +104,35 @@ export default function FindCarpool() {
           <FontAwesome5 size={15} name="comment" color={COLORS.accent} style={{ marginRight: 10 }} />
           <WhiteText>Open Group Chat</WhiteText>
         </TouchableOpacity>
-
+        <Card height={90} customStyling={{ justifyContent: "flex-start", alignItems: "flex-start", paddingHorizontal: 20, paddingTop: 10, marginTop:5, position: 'relative' }}>
+          <Header3>Next Trip details</Header3>
+          <WhiteText>Driver: {area}</WhiteText>
+          <WhiteText>Passengers: {days.join(", ")}</WhiteText>
+          <View style={customStyles.container}>
+            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="check" color={"white"} size={14} />} press={() => { }} />
+            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="times" color={"white"} size={14} />} press={() => { }} />
+          </View>
+        </Card>
         <View style={customStyles.membersContainer}>
-          <Header2 customStyling={{ alignSelf: "center", marginVertical: 10 }}>Members (1/{seats})</Header2>
-          <ScrollView style={{maxHeight:230}}>
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
-            
-            <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Image source={{ uri: "https://media.architecturaldigest.com/photos/63079fc7b4858efb76814bd2/16:9/w_4000,h_2250,c_limit/9.%20DeLorean-Alpha-5%20%5BDeLorean%5D.jpg" }} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
-                <WhiteText customStyling={{ fontSize: 13 }}>Slatty</WhiteText>
-              </View>
-              <View>
-                <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { }} />
-              </View>
-            </View>
+          <Header2 customStyling={{ alignSelf: "center", marginVertical: 10 }}>Members ({members.length}/{seats})</Header2>
+          <ScrollView style={{ maxHeight: 230 }}>
+            {members.map(function (data, index) {
+              return (
+                <MemberCard key={index} memberUsername={data} edit={editing} pfp={{ uri: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAlAMBIgACEQEDEQH/xAAaAAEAAwEBAQAAAAAAAAAAAAAAAwQFAgEH/8QAMRAAAgIAAwUGBQUBAQAAAAAAAAECAwQREiExQVFxBRMyUmGBFCKRobEzQmJy0ZIj/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APuIAAAHFlka4uUmkgOyG3E1VbJS28ltZRxGNnZmq84R+7KoF2ztCTeVcElze0ryxV0t9j9thEAOnOb3zk/c81S5v6ngA7jdbHdOS9yaGNujval1RWAGlVj65bJpwf1LUZRks4tNc0YZ3VbOqWcJZc1wYG2CrhsZG1qM/ln9mWgAAAAAAAcWTjXByk8kgOcRdGmGqXsuZk3Wzunqm+i5C62V1jnL2XJHAAAAAAAAAAAAAAAL2Dxm1V2v0Uv9KIA3gUcBidSVVj25fK+ZeAAAAZfaF+uzRF/LF7fVl/FW91TKS37l1MYAAAAAAHqi5PJJt8kWMLhHctcnph03mlXVCuOUIpIDLjhL5L9Nrq8j14O9fsz6M1gBhzrnDxxa6o5N1pSWTWa5MpYnAppyoWT8oGeBxye8AAAATcWmtjTzNjDWq6pT47mjHLXZ9ui7S3sns9wNQAAZ3ac/mhXwSzZSJsbLViZv2IQAAAE+Do76zb4Y7X/hAa2Cr0YePOW1gTpZLJHoAAAAAABQ7Qo2d9FbV4igbslqTT3MxLId3ZKHJ5AcgAAexemSa3raeHgG7XLXCMlxWYIMBLVho+jaAGba87Zv+T/JwdWeOX9mcgAAB4zeikopLckYJuVTU64yXFZgdgAAAAAAAGRjllip+34Ncx8ZLVipvhnkBCAAAAAu4GbjU1/IHGDjnW/7ACHEx03zX8mRlntGGnEavMsysAAAA0uzrddXdvfD8Gad02SqsjKPD7oDbBHTbC2ClB7PwSAAAAAPG0lmwOLrFVW5vh+TFbzeb3ssYzE99PTF/JH7lcAAAAAA0uz4L4fN8ZME+GhoohH0AEPaFeqjVxht9jMN1pNNNZpmLfU6bXB8N3QDgAAADuFVlngg2AqtnVLVB5Mv04+uWSsWl8+BV+Cv8n3Q+CxHlX1QGnG2E1nGcX0Z65xW+UV1Zl/A3+VfVD4G/wAq+qAu2Y2mG6Wp8olDEYmd+zPTDkjr4LEeVfVD4G/yr6oCuCaWFvjvrfttIWmnk00+TAAAASYat23Rjls3voRmj2dTph3rW2W7oBdAAArY2jvq84r547vX0LIAwT2EJWSUYLNsvY7Cav8A0rW39yXH1JMBGtVZxac34vT0AYfBQgk7Mpy9dyLWWW49AAAAAAAAAAjtphbHKcVLqSADJxOElTnKLcofdFc3WZcsOrMS66HnHi8tiA5wlDusWfgW1s1kskjmmqNNahBbF9zsAAAAAAFW7DtT73DvTPiuEi0AK1OKjJ6Lfks4p8SyR3U13RynH34lfu8TR+lJWQ8st4FwFSONgnpujKuXqixC6ufhnF+4HYAAA8cox8TS6shsxdNe+afotoE5xZZGuOqbSRW7++79CrSvNM6hg05a75OyXruA4c7cW8q84VcZcWWqaoVQUYLJfk6SyPQAAAAAAAAAAAAADmUVJZSSa9SGWDol+zJ+jAAinhIRfyzmujPPhlu7yz/oACSOBp3vVLqyaFFVfggl7HgAkPQAAAAAAAAAP//Z" }} />
+              )
+            })}
           </ScrollView>
           <View style={customStyles.container}>
-            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="share-alt" color={"white"} size={14} />} press={() => { }} />
+            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { setEditing(!editing) }} />
+            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-plus" color={"white"} size={14} />} press={() => { }} />
           </View>
         </View>
       </ScrollView>
     </View>
   );
 }
+
+
 
 const customStyles = StyleSheet.create({
   container: {
