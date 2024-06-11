@@ -3,17 +3,12 @@ import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '@/components/CustomButton';
 import { signOut } from 'firebase/auth';
-import useAuth from '@/hooks/useAuth';
 import { auth } from '@/constants/firebase';
 import {protectedRoute} from '@/constants/firebase';
 import { useRootNavigationState } from 'expo-router';
 import { WhiteText } from '@/components/CustomUI';
 
 export default function Index() {
-  const rootNavigationState = useRootNavigationState();
-
-  if (!rootNavigationState?.key) return null;
-  const { user } = useAuth();
 
   protectedRoute();
 

@@ -3,16 +3,13 @@ import { Header1, Header2, Header3 } from '@/components/CustomUI';
 import { router, useRootNavigationState } from "expo-router";
 import { Text, View } from "react-native";
 import { useEffect } from "react";
-import { auth, loggedOutCheck } from "@/constants/firebase"; // Ensure you have the correct import for auth
+import { auth, loggedOutCheck } from "@/constants/firebase";
 
 export default function Index() {
-  const rootNavigationState = useRootNavigationState();
 
   useEffect(() => {
     loggedOutCheck();
-  }, []); 
-
-  if (!rootNavigationState?.key) return null;
+  }, [router]); 
 
   return (
     <View

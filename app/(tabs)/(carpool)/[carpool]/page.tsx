@@ -1,99 +1,113 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { auth, db, protectedRoute } from '@/constants/firebase';
 import { router, useLocalSearchParams, useRootNavigationState } from 'expo-router';
-import { View, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
-import { CenteredView, Header1, Header2, Header3, LeftAlignedHeader2, WhiteText } from '@/components/CustomUI';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { CenteredView, Header1, Header2, Header3, ListView, WhiteText } from '@/components/CustomUI';
 import Backbutton from '@/components/Backbutton';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import CustomIndicator from '@/components/CustomIndicator';
-import { IconButton } from '@/components/CustomButton';
+import CustomButton, { IconButton } from '@/components/CustomButton';
 import { FontAwesome5 } from '@expo/vector-icons';
 import COLORS from '@/constants/Colors';
 import Card from '@/components/Card';
 import styles from '@/constants/styles';
 import MemberCard from '@/components/memberCard';
+import BottomSheet from "@gorhom/bottom-sheet";
+import InputWithIcon from '@/components/InputWithIcon';
 
-export default function FindCarpool() {
-  const rootNavigationState = useRootNavigationState();
+interface CarpoolData {
+  area: string;
+  author: string;
+  days: string[];
+  destination: string;
+  seats: number;
+  time: string;
+  title: string;
+}
 
-  if (!rootNavigationState?.key) return null;
-
-  protectedRoute();
-  const [area, setArea] = useState("");
-  const [author, setAuthor] = useState("");
-  const [days, setDays] = useState([]);
-  const [destination, setDestination] = useState("");
-  const [seats, setSeats] = useState(8);
-  const [time, setTime] = useState("");
-  const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false);
+export default function CarpoolPage() {
   const { carpool } = useLocalSearchParams();
-  const [members, setMembers] = useState(["nigger", "nigger", "nigger", "nigger"]);
+
+  const [carpoolData, setCarpoolData] = useState<CarpoolData>({
+    area: "",
+    author: "",
+    days: [],
+    destination: "",
+    seats: 8,
+    time: "",
+    title: "",
+  });
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [members, setMembers] = useState<string[]>(["member1", "member2", "member3"]);
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["35%"], []);
+  bottomSheetRef.current?.close();
+
+  useEffect(() => {
+    protectedRoute();
+    getDocument();
+  }, [router]);
 
   const getDocument = async () => {
     try {
-      //@ts-ignore
-      const docRef = doc(db, 'carpool-requests', carpool);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document loaded");
-        const data = docSnap.data();
-        //@ts-ignore
-        setArea(data.area || "");
-        //@ts-ignore
-        setAuthor(data.author || "");
+      let carpoolID = carpool;
+      if (typeof carpoolID == "string") {
+        const docRef = doc(db, 'carpools', carpoolID);
 
-        //@ts-ignore
-        let days = []
-        let count = 0;
-        let indexToDay = { 0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday" }
-        //@ts-ignore
-        data.days.forEach(element => {
-          if (element) {
-            //@ts-ignore
-            days.push(indexToDay[count])
-          }
-          count += 1
-        });
-        //@ts-ignore
-        setDays(days || []);
-        //@ts-ignore
-        setDestination(data.destination || "");
-        //@ts-ignore
-        setSeats(data.seats || 8);
-        //@ts-ignore
-        setTime(data.time || "");
-        //@ts-ignore
-        setTitle(data.title || "");
-        setLoading(false);
-      } else {
-        console.log("No such document!");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("Document loaded");
+          const data = docSnap.data() as CarpoolData;
+
+          let days :string[] = []
+          let count = 0;
+          let indexToDay = { 0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday" }
+          data.days.forEach(element => {
+            if (element) {
+              //@ts-ignore
+              days.push(indexToDay[count])
+            }
+            count += 1
+          });
+
+          setCarpoolData({
+            area: data.area || "",
+            author: data.author || "",
+            days: days || [],
+            destination: data.destination || "",
+            seats: data.seats || 8,
+            time: data.time || "",
+            title: data.title || "",
+          });
+          setLoading(false);
+        } else {
+          console.log("No such document!");
+        }
       }
     } catch (error) {
       console.error("Error getting document:", error);
     }
   };
 
-  useEffect(() => {
-    getDocument();
-  }, [auth.currentUser]);
-
   if (loading) {
-    return <CustomIndicator />
+    return <CustomIndicator />;
   }
+
   return (
     <View style={{ flex: 1, paddingTop: 55, justifyContent: "flex-start" }}>
-      <Backbutton marginLeft={20} href="/(tabs)/carpoolscreen" />
-      <Header1 customStyling={{ marginBottom: 10, alignSelf: "center" }}>{title}</Header1>
+      <Backbutton marginLeft={20} href="/(tabs)/(carpool)/home" />
+      <Header1 customStyling={{ marginBottom: 10, alignSelf: "center" }}>{carpoolData.title}</Header1>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", justifyContent: "flex-start", paddingBottom: 20 }}>
         <Card height={130} customStyling={{ justifyContent: "flex-start", alignItems: "flex-start", paddingHorizontal: 20, paddingTop: 10, position: 'relative' }}>
           <Header3>Carpool Details</Header3>
-          <WhiteText>Area: {area}</WhiteText>
-          <WhiteText>Days: {days.join(", ")}</WhiteText>
-          <WhiteText>Destination: {destination}</WhiteText>
-          <WhiteText>Seats: {seats}</WhiteText>
-          <WhiteText>Time: {time}</WhiteText>
+          <WhiteText>Area: {carpoolData.area}</WhiteText>
+          <WhiteText>Days: {carpoolData.days.join(", ")}</WhiteText>
+          <WhiteText>Destination: {carpoolData.destination}</WhiteText>
+          <WhiteText>Seats: {carpoolData.seats}</WhiteText>
+          <WhiteText>Time: {carpoolData.time}</WhiteText>
           <View style={customStyles.container}>
             <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="pen" color={"white"} size={14} />} press={() => { }} />
           </View>
@@ -104,17 +118,17 @@ export default function FindCarpool() {
           <FontAwesome5 size={15} name="comment" color={COLORS.accent} style={{ marginRight: 10 }} />
           <WhiteText>Open Group Chat</WhiteText>
         </TouchableOpacity>
-        <Card height={90} customStyling={{ justifyContent: "flex-start", alignItems: "flex-start", paddingHorizontal: 20, paddingTop: 10, marginTop:5, position: 'relative' }}>
+        <Card height={110} customStyling={{ justifyContent: "flex-start", alignItems: "flex-start", paddingHorizontal: 20, paddingTop: 10, marginTop: 5, position: 'relative' }}>
           <Header3>Next Trip details</Header3>
-          <WhiteText>Driver: {area}</WhiteText>
-          <WhiteText>Passengers: {days.join(", ")}</WhiteText>
+          <WhiteText>Driver: {carpoolData.area}</WhiteText>
+          <WhiteText>Passengers: {carpoolData.days.join(", ")}</WhiteText>
           <View style={customStyles.container}>
             <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="check" color={"white"} size={14} />} press={() => { }} />
             <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="times" color={"white"} size={14} />} press={() => { }} />
           </View>
         </Card>
         <View style={customStyles.membersContainer}>
-          <Header2 customStyling={{ alignSelf: "center", marginVertical: 10 }}>Members ({members.length}/{seats})</Header2>
+          <Header2 customStyling={{ alignSelf: "center", marginVertical: 10 }}>Members ({members.length}/{carpoolData.seats})</Header2>
           <ScrollView style={{ maxHeight: 230 }}>
             {members.map(function (data, index) {
               return (
@@ -124,10 +138,26 @@ export default function FindCarpool() {
           </ScrollView>
           <View style={customStyles.container}>
             <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-edit" color={"white"} size={14} />} press={() => { setEditing(!editing) }} />
-            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-plus" color={"white"} size={14} />} press={() => { }} />
+            <IconButton customStyling={{ backgroundColor: "black", shadowColor: "black" }} size={28} icon={<FontAwesome5 name="user-plus" color={"white"} size={14} />} press={() => {bottomSheetRef.current?.expand()}} />
           </View>
         </View>
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose={true}
+        snapPoints={snapPoints}
+        backgroundStyle={{backgroundColor:"rgba(20,20,20,0.99)"}}
+        handleIndicatorStyle={{backgroundColor:"gray"}}
+      >
+        <ListView customStyling={{paddingTop:5}}>
+          <Header3 customStyling={{marginBottom:5}}>Invite Members</Header3>
+          <View style={{flexDirection:"row"}}>
+            <InputWithIcon placeHolder="Email" icon={<FontAwesome5 name="envelope" color={"white"} size={14} />} />
+            <IconButton icon={<FontAwesome5 name="search" color={"white"} size={14} />} press={()=>{}}/>
+          </View>
+        </ListView>
+
+    </BottomSheet>
     </View>
   );
 }

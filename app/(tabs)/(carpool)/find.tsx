@@ -1,8 +1,7 @@
 // app/index.js
-import React from 'react';
-import useAuth from '@/hooks/useAuth';
+import React, { useEffect } from 'react';
 import { protectedRoute } from '@/constants/firebase';
-import { useRootNavigationState } from 'expo-router';
+import { router, useRootNavigationState } from 'expo-router';
 import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import Card, { TouchableCard } from '@/components/Card';
 import { Header1, Header2, Header3, WhiteText } from '@/components/CustomUI';
@@ -14,18 +13,15 @@ import InputWithIcon from '@/components/InputWithIcon';
 import CarpoolCard from '@/components/CarpoolCard';
 
 export default function FindCarpool() {
-  const rootNavigationState = useRootNavigationState();
-
-  if (!rootNavigationState?.key) return null;
-  const { user } = useAuth();
-
-  protectedRoute();
-
+  // making sure user is logged in
+  useEffect(() => {
+    protectedRoute();
+  }, [router]);
 
   return (
     <View style={{ flex: 1, paddingTop: 75, justifyContent: "flex-start" }}>
       <Header1 customStyling={{ marginLeft: 10, marginBottom: 10 }}>Find a car pool</Header1>
-      <Backbutton marginLeft={10} href="/(tabs)/(carpool)/carpoolscreen" />
+      <Backbutton marginLeft={10} href="/(tabs)/(carpool)/home" />
       <InputWithIcon customStyling={{ width: "95%", marginHorizontal: 10 }} icon={<FontAwesome5 name="search" color={"white"} size={14} />} />
       <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
         <CarpoolCard
@@ -42,14 +38,5 @@ export default function FindCarpool() {
 }
 
 const customStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 100,
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    width: "100%",
-    flexDirection: "row",
-    gap: 5,
-    paddingRight: 20
-  }
+
 });

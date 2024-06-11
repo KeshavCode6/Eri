@@ -2,14 +2,14 @@ import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 
 // root stack layout with dark theme
-export default function RootLayout() {
+export default function CarpoolLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
-        <Stack.Screen name="carpoolscreen" options={{headerShown:false}} />
-        <Stack.Screen name="findcarpool" options={{headerShown:false}} />
-        <Stack.Screen name="createcarpool" options={{headerShown:false}} />
-        <Stack.Screen name="confirmcreatecarpool" options={{headerShown:false}} />
+        <Stack.Screen name="home" options={{headerShown:false}} />
+        <Stack.Screen name="find" options={{headerShown:false}} />
+        <Stack.Screen name="create" options={{headerShown:false}} />
+        <Stack.Screen name="confirm" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
   );

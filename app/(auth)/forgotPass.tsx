@@ -7,20 +7,17 @@ import CustomButton from '@/components/CustomButton';
 import COLORS from '@/constants/Colors';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { router } from 'expo-router';
-import { handleAuthError } from '@/constants/firebase';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { auth, handleAuthError } from '@/constants/firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 const forgotPass = () => {
-  const [email, setEmail] = useState('');
-  const [sentEmail, setSentEmail] = useState(false);
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState(''); // email to reset
+  const [sentEmail, setSentEmail] = useState(false); // checking where email has been sent or not
+  const [error, setError] = useState(''); // setting errors
 
   const sendEmail = (email: string) => {
-    const auth = getAuth(); // Get the Auth instance
-
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        alert('Please check your email...');
         setSentEmail(true); // Assuming this is a state setter function to handle UI changes
       })
       .catch((error) => {
@@ -28,6 +25,7 @@ const forgotPass = () => {
       });
   };
 
+  // if email has been sent
   if (sentEmail) {
     return (
       <CenteredView>
@@ -37,7 +35,7 @@ const forgotPass = () => {
       </CenteredView>
     );
   }
-
+  // otherwise
   return (
     <CenteredView>
     <Backbutton href="/(auth)/authentication" />
