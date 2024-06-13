@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, DimensionValue } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ViewStyle, DimensionValue, View } from 'react-native';
 import COLORS from "@/constants/Colors"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Card from './Card';
@@ -11,7 +11,8 @@ interface CustomButtonProps {
     outline?: boolean; // Should button be outlined or solid UI
     customStyling?: ViewStyle; // Extra Styling If needed
     size?:DimensionValue; // Only for icon buttons, idk this might be messy
-    fontSize?:number ;
+    fontSize?:number;
+    amt?:number;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, customStyling = {}, outline, fontSize}) => {
@@ -33,17 +34,25 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title = "", icon, press, cu
     );
 };
 
-export const IconButton: React.FC<CustomButtonProps> = ({icon, press, customStyling = {}, size}) => {
+export const IconButton: React.FC<CustomButtonProps> = ({icon, press, customStyling = {}, amt=-1, size}) => {
+    let amtText = amt.toString()
+    if(amt>9){
+        amtText="9+"
+    }
     return (
         <TouchableOpacity style={[{width:size, aspectRatio:"1/1", padding:1}]} onPress={press}>
             <Card width={"100%"} height={"100%"} customStyling={customStyling}>
                 {icon}
 
             </Card>
+            {amt >0 && (
+                <View style={{position:"absolute", top:-11, right:-5, backgroundColor:"red", borderRadius:100, width:20, aspectRatio:"1/1", padding:4}}>
+                    <Text style={{color:"white", alignSelf:"center", fontSize:10, fontWeight:800}}>{amtText}</Text>
+                </View>
+            )}
         </TouchableOpacity>
     );
 };
-
 
 
 const styles = StyleSheet.create({

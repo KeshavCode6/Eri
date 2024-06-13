@@ -6,7 +6,7 @@ import React, { Children, ReactNode } from 'react'
 
 interface HeaderProps {
   children?: ReactNode;
-  customStyling?: ViewStyle; // optional extra styling
+  customStyling?: TextStyle; // optional extra styling
 }
 
 export const CenteredView = ({children, customStyling}:HeaderProps) =>{

@@ -42,10 +42,11 @@ export default function CarpoolPage() {
     invites: []
   });
   const [loading, setLoading] = useState(true);
+  const [inviteLoading, setInviteLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [searchEmail, setSearchEmail] = useState("");
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["45%"], []);
+  const snapPoints = useMemo(() => ["50%"], []);
   const [error, setError] = useState(''); // showing any login errors
 
   useEffect(() => {
@@ -98,22 +99,26 @@ export default function CarpoolPage() {
 
   const search = async () => {
     let carpoolID = carpool;
+    setInviteLoading(true);
     if (typeof carpoolID === "string") {
       let result = await inviteEmail(searchEmail, carpoolID, carpoolData.invites);
       if (result == true) {
         getDocument();
         setError("")
+        setInviteLoading(false);
       } else if (typeof result == "string") {
         setError(result)
+        setInviteLoading(false);
       }
     }
   };
 
   //@ts-ignore
   const remove = async (data) => {
+    setInviteLoading(true);
     //@ts-ignore
     let result = await removeInviteEmail(data, carpool, carpoolData.invites)
-    if (result == true) { getDocument() }
+    if (result == true) { getDocument();     setInviteLoading(false);    }
   }
 
   // If loading, render CustomIndicator
@@ -175,6 +180,7 @@ export default function CarpoolPage() {
         backgroundStyle={{ backgroundColor: "rgba(15,15,15,0.99)" }}
         handleIndicatorStyle={{ backgroundColor: "gray" }}
       >
+        {!inviteLoading ? (
         <ListView customStyling={{ paddingTop: 5 }}>
           <Header3 customStyling={{ marginBottom: 10 }}>Invite Members</Header3>
           <InputWithIconAndButton buttonPressed={search} buttonIcon={<FontAwesome5 name="search-plus" color={"white"} size={14} />} input={searchEmail} setInput={setSearchEmail} placeHolder="Email" icon={<FontAwesome5 name="envelope" color={"white"} size={14} />} />
@@ -188,7 +194,7 @@ export default function CarpoolPage() {
             })}
           </ScrollView>
         </ListView>
-
+        ) : (<CustomIndicator/>)}
       </BottomSheet>
     </View>
   );

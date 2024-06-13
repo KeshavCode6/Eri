@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { auth, db, protectedRoute } from '@/constants/firebase';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Header1 } from '@/components/CustomUI';
 import { IconButton } from '@/components/CustomButton';
@@ -19,22 +19,46 @@ interface Carpool {
   destination: string;
 }
 
+interface Userdoc {
+  email: string;
+  carpools: string[];
+  invites: any[];
+}
+
 export default function CarpoolHome() {
-  // making sure user is logged in, and getting user data
+  const [carpools, setCarpools] = useState<Carpool[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userdoc, setUserdoc] = useState<Userdoc | null>(null);
+  const router = useRouter();
+
+  const fetchUserData = async () => {
+    try {
+      await protectedRoute();
+      const userDocData = await getUserDoc();
+      if (userDocData) {
+        setUserdoc(userDocData);
+        await getCarpoolsData(userDocData);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  
   useEffect(() => {
-    protectedRoute();
-    getCarpoolsData();
+    refresh();
   }, [router]);
 
-  // all user carpools
-  const [carpools, setCarpools] = useState<Carpool[]>([]);
-  const [loading, setLoading] = useState(true); // whether loading or not
+  const refresh = ()=>{
+    fetchUserData();
+    if(userdoc){
+      getCarpoolsData(userdoc)
+    }
+  }
 
-  // getting carpool data from db
-  const getCarpoolsData = async () => {
+  const getCarpoolsData = async (userDoc: Userdoc) => {
     setLoading(true);
     try {
-      const data = await getCarpools();
+      const data = await getCarpools(userDoc);
       setCarpools(data);
       setLoading(false);
     } catch (error) {
@@ -44,25 +68,32 @@ export default function CarpoolHome() {
   };
 
 
+  const handleNotificationPress = () => {
+    if (typeof userdoc !== "undefined") {
+      router.push({pathname:"/(tabs)/(carpool)/notifications", params:{ data:JSON.stringify(userdoc)} });
+    }
+  };
+
+
   return (
     <View style={{ flex: 1, paddingTop: 100, justifyContent: "flex-start" }}>
-      <View style={customStyles.container}>
+      <View style={styles.container}>
         <IconButton
           size={28}
-          icon={<FontAwesome5 name="bell" outline={false} color={"white"} size={14} />}
-          press={() => { router.navigate("/(tabs)/(carpool)/notifications") }}
+          amt={userdoc?.invites.length}
+          icon={<FontAwesome5 name="bell" color={"white"} size={14} />}
+          press={handleNotificationPress}
         />
         <IconButton
           size={28}
           icon={<FontAwesome5 name="plus" color={"white"} size={14} />}
-          press={() => { router.navigate("/(tabs)/(carpool)/create") }}
+          press={() => router.push("/(tabs)/(carpool)/create")}
         />
         <IconButton
           size={28}
           icon={<FontAwesome5 name="sync" color={"white"} size={14} />}
-          press={getCarpoolsData}
+          press={() => {refresh();}}
         />
-
       </View>
       <Header1 customStyling={{ marginLeft: 20, marginBottom: 10 }}>My Car Pools</Header1>
       {loading ? (
@@ -93,35 +124,39 @@ export default function CarpoolHome() {
     </View>
   );
 }
-const getCarpools = async (): Promise<Carpool[]> => {
-  const data: Carpool[] = [];
+
+const getUserDoc = async (): Promise<Userdoc | null> => {
   try {
-    // finding what carpools the user is in from the database
     const userRef = collection(db, 'users');
     const userQuery = query(userRef, where('email', '==', auth.currentUser?.email));
     const userSnapshot = await getDocs(userQuery);
-
     if (!userSnapshot.empty) {
-      // Iterate through each user document
-      for (const userDoc of userSnapshot.docs) {
-        const carpools = userDoc.data().carpools;
+      return userSnapshot.docs[0].data() as Userdoc;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching user document:", error);
+    return null;
+  }
+};
 
-        // Iterate through each carpool ID in the user's carpools array
-        for (const id of carpools) {
-          const carpoolRef = doc(db, 'carpools', id);
-          const carpoolDoc = await getDoc(carpoolRef);
+const getCarpools = async (userdoc: Userdoc): Promise<Carpool[]> => {
+  const data: Carpool[] = [];
+  try {
+    const { carpools } = userdoc;
 
-          if (carpoolDoc.exists()) {
-            const carpoolData = carpoolDoc.data() as Carpool;
-            carpoolData.id = id;
-            data.push(carpoolData);
-          } else {
-            console.error(`Carpool document with ID ${id} does not exist`);
-          }
-        }
+    for (const id of carpools) {
+      const carpoolRef = doc(db, 'carpools', id);
+      const carpoolDoc = await getDoc(carpoolRef);
+
+      if (carpoolDoc.exists()) {
+        const carpoolData = carpoolDoc.data() as Carpool;
+        carpoolData.id = id;
+        data.push(carpoolData);
+      } else {
+        console.error(`Carpool document with ID ${id} does not exist`);
       }
     }
-
     return data;
   } catch (error) {
     console.error("Error fetching carpools:", error);
@@ -129,8 +164,7 @@ const getCarpools = async (): Promise<Carpool[]> => {
   }
 };
 
-
-const customStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 100,
