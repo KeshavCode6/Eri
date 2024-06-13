@@ -7,6 +7,7 @@ export default function RootLayout() {
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
         <Stack.Screen name="chat" options={{headerShown:false}} />
+        <Stack.Screen name="edit" options={{headerShown:false}} />
         <Stack.Screen name="page" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>

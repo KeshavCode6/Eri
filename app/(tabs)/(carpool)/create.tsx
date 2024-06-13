@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '@/hooks/useAuth';
 import { auth, db, protectedRoute } from '@/constants/firebase';
 import { router, useRootNavigationState } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
@@ -40,9 +39,9 @@ export default function CreateCarpool() {
   return (
     <View style={styles.container}>
       <Backbutton marginLeft={10} href="/(tabs)/(carpool)/home" />
-      <Header1 customStyling={styles.header}>Create a Carpool Group</Header1>
+      <Header1 customStyling={styles.header}>Create/Join a Carpool Group</Header1>
       <WhiteText customStyling={styles.description}>
-        Enter the following information to create a carpooling group request. All information can be edited later!
+        Enter the following information to create or join a carpooling group. All information can be edited later!
       </WhiteText>
 
       <ListView customStyling={styles.listView}>
@@ -157,6 +156,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginLeft: 10,
+    fontSize:23
   },
   description: {
     marginLeft: 10,

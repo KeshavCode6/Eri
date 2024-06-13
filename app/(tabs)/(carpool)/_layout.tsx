@@ -7,9 +7,9 @@ export default function CarpoolLayout() {
     <ThemeProvider value={DarkTheme}>
       <Stack screenOptions={{headerShown:false}}>
         <Stack.Screen name="home" options={{headerShown:false}} />
-        <Stack.Screen name="find" options={{headerShown:false}} />
         <Stack.Screen name="create" options={{headerShown:false}} />
         <Stack.Screen name="confirm" options={{headerShown:false}} />
+        <Stack.Screen name="notifications" options={{headerShown:false}} />
       </Stack>
     </ThemeProvider>
   );

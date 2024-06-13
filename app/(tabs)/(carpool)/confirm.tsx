@@ -43,7 +43,8 @@ interface CarpoolData {
   seats: number;
   time: string;
   author: string;
-  members: any[];
+  members: string[];
+  invites: string[];
 }
 
 export default function ConfirmCreateCarpool() {
@@ -111,7 +112,14 @@ const saveRequest = async (parsedData: CarpoolData | undefined) => {
   if (message !== true) {
     return (message);
   }
-  parsedData.members = [auth.currentUser?.email]
+  
+  if(typeof auth?.currentUser?.email !== 'string'){
+    console.error('User is not logged in?');
+    router.push("/(auth)/authentication")
+    return;
+  }
+  parsedData.members = [auth?.currentUser?.email]
+  parsedData.invites = []
   // adding the document to the database
   try {
     const docRef = await addDoc(collection(db, 'carpools'), parsedData);

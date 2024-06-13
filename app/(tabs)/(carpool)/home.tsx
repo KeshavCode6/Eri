@@ -13,9 +13,9 @@ interface Carpool {
   id: string;
   title: string;
   time: string;
-  author:string;
-  days:boolean[];
-  seats:number;
+  author: string;
+  days: boolean[];
+  seats: number;
   destination: string;
 }
 
@@ -43,9 +43,15 @@ export default function CarpoolHome() {
     }
   };
 
+
   return (
     <View style={{ flex: 1, paddingTop: 100, justifyContent: "flex-start" }}>
       <View style={customStyles.container}>
+        <IconButton
+          size={28}
+          icon={<FontAwesome5 name="bell" outline={false} color={"white"} size={14} />}
+          press={() => { router.navigate("/(tabs)/(carpool)/notifications") }}
+        />
         <IconButton
           size={28}
           icon={<FontAwesome5 name="plus" color={"white"} size={14} />}
@@ -53,14 +59,10 @@ export default function CarpoolHome() {
         />
         <IconButton
           size={28}
-          icon={<FontAwesome5 name="search" color={"white"} size={14} />}
-          press={() => { router.navigate("/(tabs)/(carpool)/find") }}
-        />
-        <IconButton
-          size={28}
           icon={<FontAwesome5 name="sync" color={"white"} size={14} />}
           press={getCarpoolsData}
         />
+
       </View>
       <Header1 customStyling={{ marginLeft: 20, marginBottom: 10 }}>My Car Pools</Header1>
       {loading ? (

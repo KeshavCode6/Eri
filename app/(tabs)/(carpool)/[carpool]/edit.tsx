@@ -12,7 +12,7 @@ import COLORS from '@/constants/Colors';
 import Card from '@/components/Card';
 import styles from '@/constants/styles';
 
-export default function ChatCarpool() {
+export default function EditCarpool() {
   useEffect(() => {
     protectedRoute();
   }, [router]);
@@ -26,7 +26,7 @@ export default function ChatCarpool() {
   return (
     <View style={{ flex: 1, paddingTop: 75, justifyContent: "flex-start" }}>
       <Backbutton marginLeft={20} href={`/(tabs)/(carpool)/${carpool}/page`} />
-      <Header1 customStyling={{marginLeft:20}}>Chat - {carpool}</Header1>
+      <Header1 customStyling={{marginLeft:20}}>Edit - {carpool}</Header1>
     </View>
   );
 }

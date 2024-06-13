@@ -17,9 +17,10 @@ var styles = StyleSheet.create({
     color: "black",
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    paddingLeft: 10,
     backgroundColor: '#fff',
     width: "80%",
+    paddingRight:0,
   },
   scrollview: {
     width: "100%"

@@ -1,16 +1,17 @@
 import React from 'react'
-import { View, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { CenteredView, Header1, Header2, Header3, LeftAlignedHeader2, WhiteText } from '@/components/CustomUI';
 import { IconButton } from './CustomButton';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-interface CarpoolCardProps {
+interface MemberCardProps {
     pfp: ImageSourcePropType,
     memberUsername: string,
-    edit: boolean,
+    edit?: boolean,
+    onClick?: ()=> void;
 }
 
-const MemberCard = ({ pfp, memberUsername, edit }: CarpoolCardProps) => {
+const MemberCard = ({ pfp, memberUsername, edit }: MemberCardProps) => {
     return (
         <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
@@ -26,6 +27,29 @@ const MemberCard = ({ pfp, memberUsername, edit }: CarpoolCardProps) => {
         </View>
     )
 }
+
+interface MemberCardPropsInvite {
+    pfp: ImageSourcePropType,
+    memberUsername: string,
+    edit?: boolean,
+    onClick: ()=> void;
+}
+
+export const MemberCardInvited = ({ pfp, memberUsername, onClick }: MemberCardPropsInvite) => {
+    return (
+        <View style={[customStyles.slot, { borderTopWidth: 1 }]}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                <Image source={pfp} style={{ borderRadius: 100, width: 30, aspectRatio: "1/1" }} />
+                <View style={{flexDirection:"column", alignItems:"flex-start", marginLeft:10}}>
+                    <WhiteText customStyling={{ fontSize: 13 }}>{memberUsername}</WhiteText>
+                    <Text style={{color:"gray", fontSize: 10 }}>Pending Acceptance</Text>
+                </View>
+            </View>
+            <IconButton customStyling={{ backgroundColor: "red", shadowColor: "red" }} size={28} icon={<FontAwesome5 name="trash" color={"white"} size={14} />} press={onClick} />
+        </View>
+    )
+}
+
 
 const customStyles = StyleSheet.create({
     slot: {

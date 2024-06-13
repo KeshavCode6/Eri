@@ -91,7 +91,7 @@ const handleLogin = async (email:string, password:string) => {
 
       // if there is not a document that exists, make one
       if (querySnapshot.empty) {
-        let startData = { email: auth.currentUser.email, carpools: [] };
+        let startData = { email: auth.currentUser.email?.toLowerCase(), carpools: [], invites:[] };
         await addDoc(ref, startData);
         console.log("User added to DB.");
       } 
